@@ -1,23 +1,30 @@
+import 'dart:math';
+
+import 'package:dice_roll/DiceRoller.dart';
 import 'package:dice_roll/StyledText.dart';
 import 'package:flutter/material.dart';
 
+const Alignment startAlignment = Alignment.topCenter;
+
 class GradientContainer extends StatelessWidget {
-  const GradientContainer({super.key});
+   GradientContainer( this.colorsList, {super.key});
+
+  final List<Color> colorsList;
+   int activeDiceImage = 1;
 
   @override
   Widget build(context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.deepPurple,
-            Colors.deepPurpleAccent,
-          ],
-          begin: Alignment.topCenter,
+          colors: colorsList,
+          begin: startAlignment,
           end: Alignment.bottomCenter,
         ),
       ),
-      child: const Center(child: StyledText()),
+      child: const Center(
+        child: DiceRoller()
+      ),
     );
   }
 }
