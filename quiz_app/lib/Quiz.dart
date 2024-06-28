@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/QuestionsScreen.dart';
+import 'package:quiz_app/ResultsScreen.dart';
+import 'package:quiz_app/data/questionsData.dart';
 
 import 'StartScreen.dart';
 
@@ -15,7 +17,7 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   var activeScreen = "START_SCREEN";
-
+  List<String> selectedAnswers = [];
 
   void switchScreen() {
     setState(() {
@@ -23,11 +25,29 @@ class _QuizState extends State<Quiz> {
     });
   }
 
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        activeScreen = "RESULTS_SCREEN";
+        selectedAnswers = [];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Widget screenWidget = activeScreen == "START_SCREEN"
-        ? StartScreen((switchScreen))
-        : const QuestionsScreen();
+    final Widget screenWidget;
+    if (activeScreen == "START_SCREEN") {
+      screenWidget = StartScreen((switchScreen));
+    } else if (activeScreen == "QUESTIONS_SCREEN") {
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    } else {
+      screenWidget = ResultsScreen(
+        chosenAnswers: selectedAnswers,
+      );
+    }
 
     return MaterialApp(
       home: Scaffold(
