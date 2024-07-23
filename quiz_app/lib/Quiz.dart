@@ -31,21 +31,28 @@ class _QuizState extends State<Quiz> {
     if (selectedAnswers.length == questions.length) {
       setState(() {
         activeScreen = "RESULTS_SCREEN";
-        selectedAnswers = [];
       });
     }
   }
 
+  void resetGame(){
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = "QUESTIONS_SCREEN";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Widget screenWidget;
-    if (activeScreen == "START_SCREEN") {
-      screenWidget = StartScreen((switchScreen));
-    } else if (activeScreen == "QUESTIONS_SCREEN") {
+     Widget screenWidget = StartScreen((switchScreen));
+
+     if (activeScreen == "QUESTIONS_SCREEN") {
       screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
-    } else {
+    }
+     if(activeScreen == "RESULTS_SCREEN") {
       screenWidget = ResultsScreen(
         chosenAnswers: selectedAnswers,
+        onPlayAgainPressed: resetGame,
       );
     }
 
